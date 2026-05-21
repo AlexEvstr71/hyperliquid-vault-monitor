@@ -41,7 +41,8 @@ def format_vault(name, details):
     closed = details.get("isClosed", True)
     n_followers = len(details.get("followers", []))
 
-    hist = details.get("portfolio", [{}])[0].get("1", {}).get("accountValueHistory", [])
+    portfolio = details.get("portfolio", [])
+    hist = portfolio[0][1].get("accountValueHistory", []) if portfolio else []
     if hist:
         latest = float(hist[-1][1])
         first = float(hist[0][1])
