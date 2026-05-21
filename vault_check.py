@@ -93,27 +93,13 @@ def main():
     lines = [f"📊 <b>Hyperliquid Vaults</b> — {now}", ""]
 
     any_change = False
-    changes_detected = []
     for name, addr in VAULTS.items():
         details = fetch_vault(addr)
         report = format_vault(name, details)
         lines.append(report)
         lines.append("")
 
-        # Check for concerning changes
-        if "🔴" in report:
-            changes_detected.append(f"{name} — отрицательное изменение")
-
     text = "\n".join(lines)
-
-    # Watchdog: only send if something changed significantly
-    if changes_detected:
-        text += "\n\n⚠️  Есть отрицательные изменения — стоит проверить!"
-    else:
-        # Silent: every vault is green, skip delivery
-        print("✅ All vaults green — skipping Telegram notification")
-        return
-
     print(text)
     send_telegram(text)
 
